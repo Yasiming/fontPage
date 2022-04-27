@@ -13,6 +13,7 @@
     "driver.js": "^0.9.8",
     "element-ui": "^2.15.6",
     "html2canvas": "^1.4.1",
+    "http-proxy-middleware": "^2.0.6",
     "intro.js": "^5.1.0",
     "js-md5": "^0.7.3",
     "jspdf": "^2.5.1",
