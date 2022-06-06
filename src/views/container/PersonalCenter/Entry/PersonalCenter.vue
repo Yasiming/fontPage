@@ -49,18 +49,24 @@ export default {
         },
         {
           id: 3,
+          iconfont: '&#xe655;',
+          path: '/PersonalCenter/myeditor',
+          title: '我的编辑'
+        },
+        {
+          id: 4,
           iconfont: '&#xe621;',
           path: '/PersonalCenter/uploadFile',
           title: '上传文件'
         },
         {
-          id: 4,
+          id: 5,
           iconfont: '&#xe600;',
           path: '/PersonalCenter/editPassword',
           title: '修改密码'
         },
         {
-          id: 5,
+          id: 6,
           iconfont: '&#xe60e;',
           path: '/PersonalCenter/safeExit',
           title: '安全退出'

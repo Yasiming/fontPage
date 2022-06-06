@@ -9,7 +9,7 @@ export default {
   name: 'SafeExit',
   mounted() {
     SafeExitApi().then((res) => {
-      localStorage.removeItem('TOKEN')
+      localStorage.clear()
       this.$message.success('退出成功')
       Pubsub.publish('safeExit', '/')
       this.$router.push('/page1')

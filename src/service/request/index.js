@@ -4,7 +4,8 @@ export default function request(config) {
   // 1.创建axios的实例
   const instance = axios.create({
     baseURL: process.env.VUE_APP_URL,
-    timeout: 8000
+    timeout: 8000,
+    withCredentials:true
   })
   // 2.axios的拦截器
   instance.interceptors.request.use(
@@ -30,6 +31,7 @@ export default function request(config) {
   instance.interceptors.response.use(
     (res) => {
       //登录过期
+      console.log(res.data,'dddddd');
       if (res.data.status === 2) {
         removeCache(CHECKTOKEN)
       }
