@@ -28,7 +28,7 @@ export default {
       demo: [
         { a1: '采购合同', path: '/page1' },
         { a1: '劳动合同', path: '/page2' },
-        { a1: '工业品买卖合同', path: '/page3' }
+        { a1: '租赁合同', path: '/page3' }
       ],
       liNum: 0
     }

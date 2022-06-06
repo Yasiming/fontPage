@@ -82,6 +82,7 @@
 
 <script>
 import { getAllFile, getIndexFile } from '@/service/File'
+import config from '@/config/config'
 import Pubsub from 'pubsub-js'
 export default {
   name: 'Search',
@@ -128,7 +129,7 @@ export default {
   methods: {
     handleEdit(index, row) {
       console.log(index, row)
-      window.open('http://localhost:5000' + row.file_src)
+      window.open(config.BASE_URL + row.file_src)
     },
     handleClearButton() {
       this.title = ''

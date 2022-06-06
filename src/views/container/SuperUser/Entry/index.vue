@@ -11,8 +11,36 @@
             @click="() => (isShowBottom = !isShowBottom)"
             >{{ !isShowBottom ? '隐藏编辑器' : '显示编辑器' }}</el-link
           >
+          <div class="title_tt">
+            <el-button type="text" @click="dialogVisible = true">{{
+              title ? title : '点击输入标题'
+            }}</el-button>
+
+            <el-dialog
+              title="提示"
+              :visible.sync="dialogVisible"
+              width="30%"
+              :before-close="handleClose"
+            >
+              <div>标题：</div>
+              <div><el-input v-model="title" /></div>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false"
+                  >确 定</el-button
+                >
+              </span>
+            </el-dialog>
+          </div>
           <div class="mr30">
             <div id="htx2">
+              <el-link
+                style="margin-right: 12px"
+                @click="handleEditorSave"
+                :underline="false"
+                icon="el-icon-s-promotion"
+                >保存到云端</el-link
+              >
               <el-link
                 style="margin-right: 12px"
                 @click="handleTempSaveInfoTOLocal"
@@ -47,6 +75,7 @@
         <div style="--i: 7" class="sild"></div>
         <div style="--i: 8" class="sild"></div>
         <div style="--i: 9" class="sild"></div>
+        <!-- 页面显示区域 -->
         <div
           class="printHtml"
           v-html="value"
@@ -87,7 +116,8 @@
 import GoTop from '@/views/container/SuperUser/component/GoTop'
 import Editor from '@/components/Editor/Editor'
 import { getPdf } from '@/config/untis'
-import { getCache, removeCache, setCache } from '@/config/store2'
+import { getCache, removeCache, setCache, CHECKTOKEN } from '@/config/store2'
+import { SaveUserEditor, editorUserEditor } from '../../../../service/Log/index'
 
 import Driver from 'driver.js'
 import 'driver.js/dist/driver.min.css'
@@ -100,7 +130,9 @@ export default {
       value: '',
       show: true,
       isShow: false, //底部展示控制
-      isShowBottom: false
+      isShowBottom: false,
+      title: '',
+      dialogVisible: false
     }
   },
   components: {
@@ -111,20 +143,61 @@ export default {
     handleSavePDFTOLocal() {
       getPdf('.printHtml')
       removeCache('TempSaveInfo')
+      removeCache('TempSaveTitle')
     },
     handleTempSaveInfoTOLocal() {
       setCache('TempSaveInfo', this.value)
     },
     handleCleanData() {
       removeCache('TempSaveInfo')
+      removeCache('TempSaveTitle')
       this.$refs['EditorRef'].handleClearCatch()
       this.value = ''
+      this.title = ''
+    },
+    handleEditorSave() {
+      const user_name = getCache(CHECKTOKEN).user_name
+      const user_id = getCache(CHECKTOKEN).token
+      const user_editor = this.value
+      const user_title = this.title
+      const isEditor = getCache('isEditor')
+      if (isEditor !== 'ok') {
+        if (user_editor !== '' && user_title !== '') {
+          SaveUserEditor(user_name, user_id, user_editor, user_title).then(
+            (res) => {
+              console.log(res, 'dddddddddd')
+              if (res.status === 200) {
+                alert(res.message)
+              }
+            }
+          )
+        } else {
+          alert('标题与编辑不能为空')
+        }
+      } else {
+        const _id = getCache('_id')
+        const user_editor = this.value
+        const user_title = this.title
+        editorUserEditor(_id, user_editor,user_title).then((res) => {
+          if (res.status === 200) {
+            alert('修改成功！')
+          }
+        })
+      }
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then((_) => {
+          done()
+        })
+        .catch((_) => {})
     }
   },
   created() {},
   mounted() {
     //获取缓存数据
     this.value = getCache('TempSaveInfo') || ''
+    this.title = getCache('TempSaveTitle') || ''
     if (!window.name) {
       const driver = new Driver({
         allowClose: false, //禁止点击外部关闭,
@@ -172,6 +245,7 @@ export default {
   },
   destroyed() {
     window.name = false
+    setCache('isEditor', 0)
   }
 }
 </script>
@@ -262,5 +336,10 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
   opacity: 0;
+}
+.title_tt {
+  height: 40px;
+  line-height: 40px;
+  display: flex;
 }
 </style>

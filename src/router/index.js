@@ -84,6 +84,12 @@ const routes = [
           import(
             '../views/container/PersonalCenter/component/SafeExit/SafeExit'
           )
+      },{
+        path:'myeditor',
+        component: () =>
+        import(
+          '../views/container/PersonalCenter/component/MyEditor/MyEditor'
+        )
       }
     ]
   },

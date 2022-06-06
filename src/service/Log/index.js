@@ -68,3 +68,46 @@ export const SafeExitApi = () =>
     method: 'get',
     url: '/user/logout'
   })
+
+// ..存储用户的编辑
+export const SaveUserEditor = (user_name, user_id, user_editor, user_title) =>
+  request({
+    method: 'post',
+    url: '/user/editor',
+    data: {
+      user_name,
+      user_id,
+      user_editor,
+      user_title
+    }
+  })
+// ..获取用户的编辑
+export const getUserEditor = (user_id) =>
+  request({
+    method: 'post',
+    url: '/user/findeditor',
+    data: {
+      user_id
+    }
+  })
+// ..修改用户编辑
+export const editorUserEditor = (_id, user_editor, user_title) =>
+  request({
+    method: 'post',
+    url: '/user/editorContent',
+    data: {
+      _id,
+      user_editor,
+      user_title
+    }
+  })
+
+// ..删除指定编辑
+export const deleteUserEditor = (_id) =>
+  request({
+    method: 'post',
+    url: '/user/deleteEditor',
+    data: {
+      _id
+    }
+  })

@@ -25,7 +25,8 @@ export default {
       const res = await checkTokenApi()
       if (res.status === 200) {
         const newSrc = config.BASE_URL + file_src
-        window.open(newSrc)
+        this.openUrl = newSrc
+        window.open(newSrc, '标题')
       } else {
         this.$message.error(res.message)
         this.$router.push('/user/login')
